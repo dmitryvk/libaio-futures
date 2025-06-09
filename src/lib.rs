@@ -453,13 +453,10 @@ impl AIOManager {
         &self,
         fd: RawFd,
         offset: u64,
-        length: usize,
+        data: Box<[u8]>,
         priority: Option<u16>,
     ) -> AIOFuture {
         let priority = priority.unwrap_or(0);
-        let mut data = Vec::new();
-        data.resize(length, 0);
-        let data = data.into_boxed_slice();
         let aio = AIO::new(
             self.scheduler_in.next_id(),
             fd,
